@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_photo_list">
+    <fragment
+        android:id="@+id/navigation_photo_list"
+        android:name="com.example.attractions.presentation.photolistfragment.PhotoListFragment"
+        tools:layout="@layout/photo_list_fragment"
+        >
+        <action
+            android:id="@+id/action_navigation_photo_list_to_navigation_create_photo"
+            app:destination="@id/navigation_create_photo" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_create_photo"
+        android:name="com.example.attractions.presentation.createphoto.CreatePhotoFragment"
+        tools:layout="@layout/create_photo_fragment">
+        <action
+            android:id="@+id/action_navigation_create_photo_to_navigation_photo_list"
+            app:destination="@id/navigation_photo_list" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.example.attractions.presentation.mapfragment.MapFragment"
+        tools:layout="@layout/map_fragment">
+        <action
+            android:id="@+id/action_navigation_map_to_navigation_photo_list"
+            app:destination="@id/navigation_photo_list" />
+        <action
+            android:id="@+id/action_navigation_map_to_navigation_create_photo"
+            app:destination="@id/navigation_create_photo" />
+    </fragment>
+</navigation>

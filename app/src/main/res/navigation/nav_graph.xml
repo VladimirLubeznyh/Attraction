@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/photoListFragment">
+
+    <fragment
+        android:id="@+id/photoListFragment"
+        android:name="com.example.attractions.presentation.photolistfragment.PhotoListFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/photo_list_fragment" >
+        <action
+            android:id="@+id/action_photoListFragment_to_createPhotoFragment"
+            app:destination="@id/createPhotoFragment"
+            />
+        <action
+            android:id="@+id/action_photoListFragment_to_mapFragment"
+            app:destination="@id/mapFragment"
+            />
+    </fragment>
+    <fragment
+        android:id="@+id/createPhotoFragment"
+        android:name="com.example.attractions.presentation.createphoto.CreatePhotoFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/create_photo_fragment" >
+        <action
+            android:id="@+id/action_createPhotoFragment_to_photoListFragment"
+            app:destination="@id/photoListFragment"
+            app:popUpTo="@id/photoListFragment"
+            app:popUpToInclusive="true"
+            />
+    </fragment>
+    <fragment
+        android:name="com.example.attractions.presentation.mapfragment.MapFragment"
+        android:id="@+id/mapFragment"
+        tools:layout="@layout/map_fragment"
+        android:label="@string/app_name"
+        >
+        <action
+            app:destination="@id/photoListFragment"
+            android:id="@+id/action_mapFragment_to_photoListFragment"
+            />
+
+    </fragment>
+</navigation>

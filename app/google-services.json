@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "998681397228",
+    "project_id": "attractions-a3820",
+    "storage_bucket": "attractions-a3820.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:998681397228:android:183cae15ebb330043762c9",
+        "android_client_info": {
+          "package_name": "com.example.attractions"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "998681397228-8ksttfsdj1gvqve2sb6pfuvsbcvc6r0r.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC5YkIfefYPpc4d7CJVi04hqqMXuDESKCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "998681397228-8ksttfsdj1gvqve2sb6pfuvsbcvc6r0r.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

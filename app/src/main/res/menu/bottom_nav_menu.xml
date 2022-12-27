@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_photo_list"
+        android:icon="@drawable/ic_baseline_collections"
+        android:title="photos"
+        />
+
+    <item  android:id="@+id/navigation_create_photo"
+        android:icon="@drawable/ic_baseline_camera"
+        android:title="camera"
+        />
+    <item  android:id="@+id/navigation_map"
+        android:icon="@drawable/ic_baseline_location"
+        android:title="map"
+        />
+
+</menu>
