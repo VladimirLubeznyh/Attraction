@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView.*
 import com.example.attractions.databinding.LastItemAddPhotoBinding
 import com.example.attractions.databinding.PhotoItemBinding
-import com.example.attractions.entity.PhotoEntity
+import com.example.attractions.data.local.entity.PhotoEntity
 
 //Диффутил
 class PhotoListAdapter(private val onClickFooter: () -> Unit) : Adapter<ViewHolder>() {

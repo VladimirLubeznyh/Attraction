@@ -14,10 +14,10 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.example.attractions.databinding.MapFragmentBinding
-import com.example.attractions.di.appComponent
-import com.example.attractions.entity.Attractions
-import com.example.attractions.entity.PreviewAttractions
-import com.example.attractions.isPermissionsGranted
+import com.example.attractions.appComponent
+import com.example.attractions.domain.model.Attraction
+import com.example.attractions.domain.model.PreviewAttraction
+import com.example.attractions.presentation.isPermissionsGranted
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
@@ -68,12 +68,12 @@ class MapFragment : Fragment() {
     private fun getAttractionList(lat: Double, lon: Double) {
         kotlin.runCatching {
             viewModel.getAttractionList(
-                checkingSystemLanguage(),
                 lon,
                 lat
             )
         }
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         fusedLocation = LocationServices.getFusedLocationProviderClient(requireContext())
@@ -87,7 +87,7 @@ class MapFragment : Fragment() {
     ): View {
         _binding = MapFragmentBinding.inflate(layoutInflater)
         infoBottomSheet = BottomSheetBehavior.from(binding.bottom.bottomSheetInfo)
-        viewModel.attractionsList.value?.let { addMarkers(it) }
+        viewModel.attractionsList.value.let { addMarkers(it) }
         return binding.root
     }
 
@@ -99,9 +99,9 @@ class MapFragment : Fragment() {
             kotlin.runCatching {
                 initializeGoogleMap()
             }
-
         }
         observeOnAttractions()
+        onMarkerClickListener()
     }
 
     override fun onStop() {
@@ -114,9 +114,6 @@ class MapFragment : Fragment() {
         _binding = null
         super.onDestroy()
     }
-
-    private fun checkingSystemLanguage() =
-        if (Locale.getDefault().toString() == "ru_RU") "ru" else "en"
 
     @SuppressLint("MissingPermission")
     private fun initializeGoogleMap() {
@@ -141,26 +138,19 @@ class MapFragment : Fragment() {
 
     @SuppressLint("MissingPermission")
     private fun startLocation() {
-        val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY,600_000).build()
+        val request = LocationRequest.Builder(Priority.PRIORITY_HIGH_ACCURACY, 600_000).build()
         fusedLocation.requestLocationUpdates(request, locationCallback, Looper.getMainLooper())
     }
 
-    private fun addMarkers(previewAttractionsList: List<PreviewAttractions>?) {
-        previewAttractionsList?.forEach { preview ->
-            val latLngPreviewAttractions = LatLng(preview.point.lat, preview.point.lon)
-            mMap?.addMarker(MarkerOptions().position(latLngPreviewAttractions))
+    private fun addMarkers(previewAttractionsList: List<PreviewAttraction>) {
+        previewAttractionsList.forEach { preview ->
+            mMap?.addMarker(MarkerOptions().position(LatLng(preview.lat, preview.lon)))
         }
     }
 
-    private fun onMarkerClickListener(previewAttractionsList: List<PreviewAttractions>?) {
+    private fun onMarkerClickListener() {
         mMap?.setOnMarkerClickListener { marker ->
-            val markerPosition = LatLng(marker.position.latitude, marker.position.longitude)
-            previewAttractionsList?.forEach { item ->
-                val itemPosition = LatLng(item.point.lat, item.point.lon)
-                if (markerPosition == itemPosition) {
-                    viewModel.getAttractionInfo(checkingSystemLanguage(), item.xid)
-                }
-            }
+            viewModel.getAttractionInfo(LatLng(marker.position.latitude, marker.position.longitude))
             showBottomSheet()
             return@setOnMarkerClickListener true
         }
@@ -177,12 +167,12 @@ class MapFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-        infoBottomSheet.setPeekHeight(120, true)
+        infoBottomSheet.setPeekHeight(150, true)
         infoBottomSheet.state = BottomSheetBehavior.STATE_COLLAPSED
     }
 
-    private fun setInfoInView(attractions: Attractions) {
-        binding.bottom.run {
+    private fun setInfoInView(attractions: Attraction) {
+        with(binding.bottom) {
             titleText.text = attractions.name
             Glide
                 .with(requireContext())
@@ -190,7 +180,7 @@ class MapFragment : Fragment() {
                 .centerCrop()
                 .placeholder(R.drawable.ic_placeholder)
                 .into(pictureAttractions)
-            descriptionText.text = attractions.info?.descr ?: attractions.wikipediaExtracts?.text
+            descriptionText.text = attractions.description
         }
     }
 
@@ -198,7 +188,6 @@ class MapFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launchWhenStarted {
             viewModel.attractionsList.collect {
                 addMarkers(it)
-                onMarkerClickListener(it)
             }
         }
     }

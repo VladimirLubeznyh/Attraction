@@ -3,7 +3,7 @@ package com.example.attractions.presentation.photolistfragment.photolist
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.attractions.databinding.PhotoItemBinding
-import com.example.attractions.entity.PhotoEntity
+import com.example.attractions.data.local.entity.PhotoEntity
 
 class ItemViewHolder(private val binding: PhotoItemBinding) :
     RecyclerView.ViewHolder(binding.root) {

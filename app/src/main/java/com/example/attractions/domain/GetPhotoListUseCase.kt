@@ -1,7 +1,7 @@
 package com.example.attractions.domain
 
 import com.example.attractions.data.Repository
-import com.example.attractions.entity.PhotoEntity
+import com.example.attractions.data.local.entity.PhotoEntity
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 

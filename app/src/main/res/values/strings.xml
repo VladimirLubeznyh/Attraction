@@ -2,4 +2,5 @@
     <string name="app_name">Attractions2.0</string>
     <string name="photo_saved_on">Photo saved on: %1$s</string>
     <string name="photo_failed">Photo failed: %1$s</string>
+    <string name="nothing">nothing</string>
 </resources>

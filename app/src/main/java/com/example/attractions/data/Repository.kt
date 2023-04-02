@@ -1,44 +1,47 @@
 package com.example.attractions.data
 
-import android.util.Log
-import com.example.attractions.data.db.PhotoDao
-import com.example.attractions.data.retrofit.RetrofitServices
-import com.example.attractions.entity.Attractions
-import com.example.attractions.entity.PhotoEntity
-import com.example.attractions.entity.PreviewAttractions
+import android.content.Context
+import com.example.attractions.data.local.PhotoDao
+import com.example.attractions.data.network.RetrofitServices
+import com.example.attractions.data.network.response.ResponseAttraction
+import com.example.attractions.data.local.entity.PhotoEntity
+import com.example.attractions.data.network.response.ResponsePreviewAttraction
+import com.example.attractions.di.annotation.IoDispatcher
+import com.example.attractions.domain.model.Attraction
+import com.example.attractions.domain.model.PreviewAttraction
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
+import java.util.*
 import javax.inject.Inject
 
 class Repository @Inject constructor(
     private val photoDao: PhotoDao,
-    private val retrofitServices: RetrofitServices
+    private val retrofitServices: RetrofitServices,
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val context: Context
 ) {
-    fun getPhotoList(): Flow<List<PhotoEntity>> {
-        return photoDao.getAllPhoto()
+    private val lang by lazy {
+        if (Locale.getDefault().toString() == "ru_RU") "ru" else "en"
     }
 
-    suspend fun addPhoto(photo: PhotoEntity) {
+    fun getPhotoList(): Flow<List<PhotoEntity>> = photoDao.getAllPhoto()
+
+    suspend fun addPhoto(photo: PhotoEntity) = withContext(ioDispatcher) {
         photoDao.insert(photo)
     }
 
     suspend fun getListAttractions(
-        lang: String,
         lon: Double,
         lat: Double
-    ): List<PreviewAttractions>? {
-        val response = retrofitServices.searchListAttractions.getAttractionList(
-            lang = lang,
-            lon = lon,
-            lat = lat
-        )
-        Log.d("REST", response.headers().toString() )
-        return response.body()
+    ): List<PreviewAttraction> = withContext(ioDispatcher) {
+        retrofitServices.searchListAttractions.getAttractionList(lang = lang, lon = lon, lat = lat)
+            .map { it.mapToPreviewAttraction() }
     }
 
-    suspend fun getInfoAttractions(lang: String, xid: String): Attractions? {
-        val response =
+    suspend fun getInfoAttraction(xid: String): Attraction =
+        withContext(ioDispatcher) {
             retrofitServices.searchInfoAttractions.getAttractionsInfo(lang = lang, xid = xid)
-        Log.d("REST", response.headers().toString() )
-        return response.body()
-    }
+                .mapToAttraction(context)
+        }
 }

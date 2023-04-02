@@ -1,4 +1,4 @@
-package com.example.attractions.di
+package com.example.attractions
 
 import android.app.Application
 import android.app.NotificationChannel
@@ -6,6 +6,8 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
+import com.example.attractions.di.AppComponent
+import com.example.attractions.di.DaggerAppComponent
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 
 class BaseApp() : Application() {

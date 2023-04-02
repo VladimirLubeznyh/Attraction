@@ -1,4 +1,4 @@
-package com.example.attractions.entity
+package com.example.attractions.data.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -10,6 +10,5 @@ data class PhotoEntity(
     @ColumnInfo(name = "photo_url")
     val photoUrl: String,
     @ColumnInfo(name = "photo_date")
-    val photoDate: String
+    val photoDate: String,
 )
-

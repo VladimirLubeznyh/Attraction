@@ -1,8 +1,8 @@
-package com.example.attractions.data.db
+package com.example.attractions.data.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.example.attractions.entity.PhotoEntity
+import com.example.attractions.data.local.entity.PhotoEntity
 
 @Database(
     entities = [
@@ -10,5 +10,6 @@ import com.example.attractions.entity.PhotoEntity
     ], version = 1
 )
 abstract class AppDatabase : RoomDatabase() {
+
     abstract fun photoDao(): PhotoDao
 }

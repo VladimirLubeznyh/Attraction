@@ -3,7 +3,7 @@ package com.example.attractions.presentation.createphoto
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.attractions.domain.AddPhotoUseCase
-import com.example.attractions.entity.PhotoEntity
+import com.example.attractions.data.local.entity.PhotoEntity
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

@@ -7,12 +7,13 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.example.attractions.MainActivity
 import com.example.attractions.R
-import com.example.attractions.di.BaseApp
+import com.example.attractions.BaseApp
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import kotlin.random.Random
 
 class FcmService():FirebaseMessagingService(){
+
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val intent = Intent(this, MainActivity::class.java)
@@ -40,6 +41,5 @@ class FcmService():FirebaseMessagingService(){
 
     override fun onNewToken(token: String) {
         super.onNewToken(token)
-
     }
 }

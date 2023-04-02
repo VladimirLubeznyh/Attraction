@@ -1,5 +1,6 @@
-package com.example.attractions
+package com.example.attractions.presentation
 
+import android.content.Context
 import android.content.pm.PackageManager
 import androidx.activity.result.ActivityResultLauncher
 import androidx.core.content.ContextCompat
@@ -27,5 +28,17 @@ fun Fragment.isPermissionsGranted(
         launcher.launch(permissionList)
         false
     }
+}
+
+fun Context.checkPermissionsGranted(launcher: ActivityResultLauncher<Array<String>>,
+                                    permissionList: Array<String>, action:()->Unit){
+    val isAllGranted = permissionList.all { permission ->
+        ContextCompat.checkSelfPermission(
+            this,
+            permission
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+   if (isAllGranted) action
+   else launcher.launch(permissionList)
 }
 

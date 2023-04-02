@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.attractions.R
 import com.example.attractions.databinding.PhotoListFragmentBinding
-import com.example.attractions.di.appComponent
+import com.example.attractions.appComponent
 import com.example.attractions.presentation.photolistfragment.photolist.PhotoListAdapter
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.launch
@@ -67,7 +67,6 @@ class PhotoListFragment : Fragment() {
 
 
     private fun onClickFooter() {
-        throw Exception("ON click footer")
         findNavController().navigate(R.id.action_navigation_photo_list_to_navigation_create_photo)
     }
 

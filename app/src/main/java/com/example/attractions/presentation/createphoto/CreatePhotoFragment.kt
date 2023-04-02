@@ -1,10 +1,10 @@
 package com.example.attractions.presentation.createphoto
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.PendingIntent
 import android.content.ContentValues
 import android.content.Intent
-import android.icu.text.UnicodeSetSpanner.TrimOption
 import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
@@ -19,13 +19,13 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.example.attractions.MainActivity
-import com.example.attractions.R
-import com.example.attractions.isPermissionsGranted
+import com.example.attractions.*
 import com.example.attractions.databinding.CreatePhotoFragmentBinding
-import com.example.attractions.di.BaseApp.Companion.NOTIFICATION_CHANNEL_ID
-import com.example.attractions.di.appComponent
-import com.example.attractions.getDateString
+import com.example.attractions.BaseApp.Companion.NOTIFICATION_CHANNEL_ID
+import com.example.attractions.R
+import com.example.attractions.presentation.checkPermissionsGranted
+import com.example.attractions.presentation.getDateString
+import com.example.attractions.presentation.isPermissionsGranted
 import com.example.attractions.presentation.photolistfragment.showToastPhotoSave
 import com.example.attractions.presentation.photolistfragment.showToastPhotoSaveFailed
 import java.text.SimpleDateFormat
@@ -108,8 +108,6 @@ class CreatePhotoFragment : Fragment() {
         )
     }
 
-
-
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(requireContext())
         cameraProviderFuture.addListener({
@@ -152,16 +150,20 @@ class CreatePhotoFragment : Fragment() {
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
             .build()
-        NotificationManagerCompat.from(requireContext()).notify(NOTIFICATION_ID, notification)
+
+        requireContext().checkPermissionsGranted(launcher, REQUEST_PERMISSION){
+            NotificationManagerCompat.from(requireContext()).notify(NOTIFICATION_ID, notification)
+        }
+
     }
 
     companion object {
         private const val NOTIFICATION_ID = 1000
         const val FILENAME_FORMAT = "yyyy-MM-dd-HH-mm-ss"
         val REQUEST_PERMISSION: Array<String> = buildList {
-            add(android.Manifest.permission.CAMERA)
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) add(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) add(android.Manifest.permission.POST_NOTIFICATIONS)
+            add(Manifest.permission.CAMERA)
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.P) add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) add(Manifest.permission.POST_NOTIFICATIONS)
         }.toTypedArray()
     }
 }
