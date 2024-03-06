@@ -2,20 +2,13 @@ package com.example.attractions.presentation.photolistfragment.photolist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView.*
 import com.example.attractions.databinding.LastItemAddPhotoBinding
 import com.example.attractions.databinding.PhotoItemBinding
 import com.example.attractions.data.local.entity.PhotoEntity
 
-//Диффутил
-class PhotoListAdapter(private val onClickFooter: () -> Unit) : Adapter<ViewHolder>() {
-
-    private var photoList: List<PhotoEntity> = emptyList()
-
-    fun setData(photoList: List<PhotoEntity>) {
-        this.photoList = photoList
-        notifyDataSetChanged()
-    }
+class PhotoListAdapter(private val onClickFooter: () -> Unit) : ListAdapter<PhotoEntity,ViewHolder>(PhotoListDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
@@ -32,15 +25,13 @@ class PhotoListAdapter(private val onClickFooter: () -> Unit) : Adapter<ViewHold
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (holder) {
-            is ItemViewHolder -> holder.bind(photoList[position])
+            is ItemViewHolder -> holder.bind(getItem(position))
             is FooterViewHolder -> holder.bind(onClickFooter)
         }
     }
 
-    override fun getItemCount(): Int = photoList.size + 1
-
     override fun getItemViewType(position: Int): Int {
-        return if (position == photoList.size) {
+        return if (getItem(position).type == PhotoEntity.FOOTER) {
             FOOTER
         } else {
             ITEM

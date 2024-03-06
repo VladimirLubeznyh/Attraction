@@ -11,4 +11,10 @@ data class PhotoEntity(
     val photoUrl: String,
     @ColumnInfo(name = "photo_date")
     val photoDate: String,
-)
+    val type:String = PHOTO
+){
+    companion object{
+        const val PHOTO ="photo"
+        const val FOOTER ="footer"
+    }
+}

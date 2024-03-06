@@ -54,7 +54,7 @@ class PhotoListFragment : Fragment() {
     private fun setData() = lifecycleScope.launch {
         binding.run {
             viewModel.listPhotoEntity.collect { photoList ->
-                adapter.setData(photoList.reversed())
+                adapter.submitList(photoList.reversed())
             }
         }
     }
